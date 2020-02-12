@@ -1,9 +1,0 @@
-{
-  "mongo": {
-    "uri": "mongodb+srv://developer:OqifCn5VRVabbYrP@shorty-storage-f8dqx.mongodb.net/test?retryWrites=true&w=majority"
-  },
-  "app": {
-    "port": 6000,
-    "baseUrl": "http://localhost:6000"
-  }
-}
