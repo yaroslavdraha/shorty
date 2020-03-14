@@ -15,27 +15,27 @@ afterAll(async (done) => {
 //endregion [Setup]
 
 //region [Properties]
-const longUrl = 'https://www.youtube.com/watch?v=fZkNQw5bFyU22222';
+const longUrl = 'https://www.youtube.com/watch?v=fZkNQw5bFyU';
 //endregion
 
-describe('URL shorten generation', () => {
-  it('should create a new short URL', async () => {
+describe('Get original URL', () => {
+  it('should get original URL based on URL code', async () => {
     let res = await request.post('/api/url/shorten')
       .send({longUrl})
       .expect(200);
 
-    for (let urlProperty in Url.schema.obj) {
-      expect(res.body).toHaveProperty(urlProperty);
-    }
+    let {urlCode} = res.body;
+
+    await request.get(`/${urlCode}`)
+      .expect('Location', longUrl)
+      .expect(302)
   });
 
-  it("shouldn't create the same short URL ", async () => {
-    await request.post('/api/url/shorten')
-      .send({longUrl})
-      .expect(200);
+  it('should return Not found status for incorrect URL code', async () => {
+    const notExistingUrlCode = "66666666666";
 
-    const urls = await Url.find({longUrl});
-    expect(urls.length).toEqual(1);
+    await request.get(`/${notExistingUrlCode}`)
+      .expect(404)
   });
 });
 
