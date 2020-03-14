@@ -1,16 +1,13 @@
 //region [Setup]
-const {agent} = require('supertest');
-const createServer = require('../../../index');
-const mongoose = require('mongoose');
+const supertest = require('supertest');
+const app = require('../../../server');
 const Url = require('../../../models/Url');
+const connect = require('./../../../providers/database')();
 
-let server = createServer();
-let request = agent(server);
+let request = supertest(app);
 
-afterAll(async (done) => {
-  server.close(done);
+afterAll(async () => {
   await cleanUp();
-  mongoose.connection.close();
 });
 //endregion [Setup]
 
@@ -28,14 +25,14 @@ describe('Get original URL', () => {
 
     await request.get(`/${urlCode}`)
       .expect('Location', longUrl)
-      .expect(302)
+      .expect(302);
   });
 
   it('should return Not found status for incorrect URL code', async () => {
     const notExistingUrlCode = "66666666666";
 
     await request.get(`/${notExistingUrlCode}`)
-      .expect(404)
+      .expect(404);
   });
 });
 

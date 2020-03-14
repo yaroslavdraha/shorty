@@ -1,16 +1,13 @@
 //region [Setup]
-const {agent} = require('supertest');
-const createServer = require('../../../index');
-const mongoose = require('mongoose');
+const supertest = require('supertest');
+const app = require('../../../server');
 const Url = require('../../../models/Url');
+const connect = require('./../../../providers/database')();
 
-let server = createServer();
-let request = agent(server);
+let request = supertest(app);
 
-afterAll(async (done) => {
-  server.close(done);
+afterAll(async () => {
   await cleanUp();
-  mongoose.connection.close();
 });
 //endregion [Setup]
 
