@@ -7,7 +7,7 @@ const connect = require('./../../../providers/database')();
 let request = supertest(app);
 
 afterAll(async () => {
-  await cleanUp();
+  await Url.deleteMany({longUrl});
 });
 //endregion [Setup]
 
@@ -35,9 +35,3 @@ describe('URL shorten generation', () => {
     expect(urls.length).toEqual(1);
   });
 });
-
-//region [Clean up]
-async function cleanUp() {
-  await Url.deleteMany({longUrl});
-}
-//endregion
