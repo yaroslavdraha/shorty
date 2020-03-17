@@ -1,5 +1,3 @@
-
-
 const urls = (model) => {
   return {
     findByCode,
